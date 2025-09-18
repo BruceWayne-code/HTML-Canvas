@@ -72,32 +72,32 @@ To get a local copy up and running, follow these simple steps.
 
 ### 📂 Project Structure
 
-html-canvas/
-├── basic/
-│   ├── shapes/
-│   │   ├── index.html
-│   │   └── style.css
-│   └── colors/
-│       ├── index.html
-│       └── style.css
-├── intermediate/
-│   ├── animation/
-│   │   ├── index.html
-│   │   └── style.css
-│   └── interactivity/
-│       ├── index.html
-│       └── style.css
-└── advanced/
-├── games/
-│   ├── index.html
-│   └── script.js
-└── visualization/
-├── index.html
-└── script.js
-├── README.md
-├── LICENSE
-└── .gitignore
----
+html-canvas/<br/>
+├── basic/<br/>
+│   ├── shapes/<br/>
+│   │   ├── index.html<br/>
+│   │   └── style.css<br/>
+│   └── colors/<br/>
+│       ├── index.html<br/>
+│       └── style.css<br/>
+├── intermediate/<br/>
+│   ├── animation/<br/>
+│   │   ├── index.html<br/>
+│   │   └── style.css<br/>
+│   └── interactivity/<br/>
+│       ├── index.html<br/>
+│       └── style.css<br/>
+└── advanced/<br/>
+├── games/<br/>
+│   ├── index.html<br/>
+│   └── script.js<br/>
+└── visualization/<br/>
+├── index.html<br/>
+└── script.js<br/>
+├── README.md<br/>
+├── LICENSE<br/>
+└── .gitignore<br/>
+---<br/>
 
 ### 🤝 Contributing
 
