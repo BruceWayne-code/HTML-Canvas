@@ -161,6 +161,7 @@ function radialGradient(canvas,ctx){
 }
 function main(){
     const canvas= document.querySelectorAll('.main-canvas')
+    const dialog = document.querySelectorAll('.main-dialog')
    if(document.createElement('canvas').getContext){
     const ctx0 = canvas[0].getContext('2d');
     drawRect(ctx0)
