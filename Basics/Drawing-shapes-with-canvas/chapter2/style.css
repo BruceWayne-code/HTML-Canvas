@@ -14,8 +14,6 @@ body{
     padding-top: 17px;
 }
 .main-canvas{
-    width: 520px;
-    height:260px;
     margin-bottom: 17px;
     border: 4px groove black;
     border-radius: 12px;
