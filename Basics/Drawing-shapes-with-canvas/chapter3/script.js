@@ -80,6 +80,28 @@ function measureTextWidth(ctx){
     ctx.fill()
     console.log('Text width = ',ctx.measureText(text))
 }
+function isMethods(ctx){
+    if(ctx.isContextLost()===true){
+        console.log('Your driver is crashes and running out of memory')
+    }else{
+        ctx.beginPath()
+        let gradient = ctx.createLinearGradient(10,0,130,130)
+        gradient.addColorStop(0,'violet')
+        gradient.addColorStop(0.5,'beige')
+        gradient.addColorStop(1,'greenyellow')
+        ctx.roundRect(10,10,120,120,12)
+        ctx.fillStyle = gradient;
+        ctx.fill()
+        console.log('Is points(35,89) are in between the path = ',ctx.isPointInPath(35,89))
+        console.log('Is points(141,89) are in between the path = ',ctx.isPointInPath(141,89))
+        ctx.beginPath()
+        ctx.strokeStyle = gradient;
+        ctx.roundRect(140,10,120,120,12)
+        ctx.lineWidth = 6;
+        ctx.stroke()
+        console.log('Is points(141,89) are in between the stroke = ',ctx.isPointInStroke(141,89))
+    }
+}
 let canvas = document.querySelectorAll('.main-canvas')
 if(document.createElement('canvas').getContext){
     let ctx0 = canvas[0].getContext('2d');
@@ -93,9 +115,11 @@ if(document.createElement('canvas').getContext){
     let ctx4 = canvas[4].getContext('2d')
     rotateMehtod(ctx4)
     let ctx5 = canvas[5].getContext('2d')
-   resetMethod(ctx5)
-   let ctx6 = canvas[6].getContext('2d')
-   measureTextWidth(ctx6)
+    resetMethod(ctx5)
+    let ctx6 = canvas[6].getContext('2d')
+    measureTextWidth(ctx6)
+    let ctx7 = canvas[7].getContext('2d')
+    isMethods(ctx7)
 
 }else
 {
