@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catch the Falling Shapes</title>
+    <!-- Use the Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Tone.js for audio effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        .game-container {
+            max-width: 600px; /* Made the game container smaller */
+            width: 100%;
+        }
+        canvas {
+            border: 2px solid #e5e7eb;
+            background-color: #374151;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            transition: all 0.2s ease-in-out;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container mx-auto p-6 md:p-10">
+        <h1 class="text-4xl font-bold text-center mb-4 text-gray-800">Catch the Falling Shapes</h1>
+        <p class="text-center text-gray-600 mb-8">
+            Use the arrow keys to move the paddle and catch the falling shapes.
+        </p>
+
+        <div class="flex flex-col items-center space-y-4">
+            <div class="bg-white rounded-xl shadow-lg p-2 md:p-6 w-full">
+                <canvas id="gameCanvas" width="500" height="375" class="w-full"></canvas>
+            </div>
+            
+            <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4">
+                <button id="easyBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-8 rounded-lg shadow-md">
+                    Easy
+                </button>
+                <button id="hardBtn" class="bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-8 rounded-lg shadow-md">
+                    Hard
+                </button>
+                <div class="bg-gray-200 text-gray-700 font-semibold py-3 px-8 rounded-lg text-lg shadow-inner">
+                    Score: <span id="scoreDisplay">0</span>
+                </div>
+            </div>
+            <button id="retryBtn" class="bg-gray-700 hover:bg-gray-800 text-white font-medium py-3 px-8 rounded-lg shadow-md hidden">
+                Retry
+            </button>
+            
+            <div id="messageBox" class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded-lg hidden text-center shadow">
+                <p id="messageText"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+            const easyBtn = document.getElementById('easyBtn');
+            const hardBtn = document.getElementById('hardBtn');
+            const retryBtn = document.getElementById('retryBtn');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const messageBox = document.getElementById('messageBox');
+            const messageText = document.getElementById('messageText');
+
+            let score = 0;
+            let isGameOver = true;
+            let player = {};
+            let fallingShapes = [];
+            let gameLoopId;
+            let currentDifficulty = null;
+            
+            // Background color for the canvas, matching the retry button
+            const canvasBgColor = '#374151';
+
+            // Define difficulty settings
+            const difficultySettings = {
+                easy: {
+                    speedMultiplier: 1.5,
+                    spawnRate: 0.01
+                },
+                hard: {
+                    speedMultiplier: 2.5,
+                    spawnRate: 0.03
+                }
+            };
+
+            // --- Audio Effects Setup ---
+            const catchSynth = new Tone.Synth().toDestination();
+            const bombSynth = new Tone.MembraneSynth({
+                pitchDecay: 0.05,
+                octaves: 8,
+                oscillator: {
+                    type: 'sine'
+                },
+                envelope: {
+                    attack: 0.001,
+                    decay: 0.4,
+                    sustain: 0.01,
+                    release: 1.4,
+                    attackCurve: 'exponential'
+                }
+            }).toDestination();
+            
+            // Continuous background music
+            const backgroundSynth = new Tone.Synth({
+                oscillator: { type: 'sine' },
+                envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 1 }
+            }).toDestination();
+
+            const backgroundLoop = new Tone.Loop(time => {
+                backgroundSynth.triggerAttackRelease("C4", "8n", time);
+            }, "4n").start(0);
+            
+            Tone.Transport.bpm.value = 120;
+            Tone.Transport.loop = true;
+            Tone.Transport.loopEnd = '1m';
+            // --- End Audio Effects Setup ---
+
+
+            // Adjust canvas size for responsiveness
+            const resizeCanvas = () => {
+                const parent = canvas.parentElement;
+                const ratio = 500 / 375;
+                const newWidth = parent.clientWidth;
+                canvas.width = 500; // Keep internal resolution high for quality
+                canvas.height = 375;
+                canvas.style.height = `${newWidth / ratio}px`;
+            };
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            // Player object
+            const initializePlayer = () => {
+                player = {
+                    x: (canvas.width / 2) - 50,
+                    y: canvas.height - 40,
+                    width: 100,
+                    height: 20,
+                    dx: 0, // Delta x for movement
+                    speed: 12 // Increased paddle speed
+                };
+            };
+            
+            // Generate a random falling shape based on difficulty
+            const createShape = () => {
+                const settings = difficultySettings[currentDifficulty];
+                const shapeSize = Math.random() * 20 + 10;
+                const colors = ['#f87171', '#34d399', '#60a5fa', '#facc15', '#a78bfa'];
+                const shapeType = Math.random() > 0.5 ? 'rect' : 'circle';
+                return {
+                    x: Math.random() * (canvas.width - shapeSize),
+                    y: -shapeSize,
+                    size: shapeSize,
+                    speed: Math.random() * 1.5 + settings.speedMultiplier,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    type: shapeType
+                };
+            };
+
+            // Draw game elements
+            const draw = () => {
+                // Draw a solid color background instead of an image
+                ctx.fillStyle = canvasBgColor;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Draw the player paddle
+                ctx.fillStyle = '#4b5563';
+                ctx.fillRect(player.x, player.y, player.width, player.height);
+
+                // Draw each falling shape
+                fallingShapes.forEach(shape => {
+                    ctx.fillStyle = shape.color;
+                    if (shape.type === 'rect') {
+                        // fillRect() for a square shape
+                        ctx.fillRect(shape.x, shape.y, shape.size, shape.size);
+                    } else {
+                        // arc() for a circle
+                        ctx.beginPath();
+                        ctx.arc(shape.x + shape.size / 2, shape.y + shape.size / 2, shape.size / 2, 0, 2 * Math.PI);
+                        ctx.fill();
+                    }
+                });
+
+                // Draw the score text in white
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '24px "Inter", sans-serif';
+                ctx.textAlign = 'start';
+                ctx.fillText(`Score: ${score}`, 10, 30);
+            };
+
+            // Update game state
+            const update = () => {
+                if (isGameOver) {
+                    return;
+                }
+                const settings = difficultySettings[currentDifficulty];
+
+                // Move player paddle based on input
+                player.x += player.dx;
+                // Clamp player within canvas bounds
+                if (player.x < 0) player.x = 0;
+                if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+                
+                // Update falling shapes
+                fallingShapes.forEach((shape, index) => {
+                    shape.y += shape.speed;
+
+                    // Check for collision with player paddle
+                    if (
+                        shape.y + shape.size >= player.y &&
+                        shape.y <= player.y + player.height &&
+                        shape.x + shape.size >= player.x &&
+                        shape.x <= player.x + player.width
+                    ) {
+                        // Collision detected, increase score
+                        score++;
+                        scoreDisplay.textContent = score;
+                        fallingShapes.splice(index, 1); // Remove caught shape
+                        // Play a sound when a shape is caught
+                        catchSynth.triggerAttackRelease('C5', '8n');
+                    }
+                });
+
+                // Filter out shapes that have fallen off the screen and check for game over
+                fallingShapes = fallingShapes.filter(shape => {
+                    if (shape.y > canvas.height) {
+                        // A shape was missed, end the game
+                        endGame();
+                        return false;
+                    }
+                    return true;
+                });
+                
+                // Randomly add new shapes based on difficulty
+                if (Math.random() < settings.spawnRate) {
+                    fallingShapes.push(createShape());
+                }
+
+                draw();
+                gameLoopId = requestAnimationFrame(update);
+            };
+            
+            // Handle keyboard input
+            document.addEventListener('keydown', (e) => {
+                if (isGameOver) return;
+                if (e.key === 'ArrowLeft') {
+                    player.dx = -player.speed;
+                } else if (e.key === 'ArrowRight') {
+                    player.dx = player.speed;
+                }
+            });
+
+            document.addEventListener('keyup', (e) => {
+                if (isGameOver) return;
+                if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                    player.dx = 0;
+                }
+            });
+
+            // Start a new game with a specific difficulty
+            const startGame = async (difficulty) => {
+                currentDifficulty = difficulty;
+                score = 0;
+                scoreDisplay.textContent = score;
+                isGameOver = false;
+                fallingShapes = [];
+                messageBox.classList.add('hidden');
+                retryBtn.classList.add('hidden'); // Hide retry button on new game start
+                
+                initializePlayer();
+
+                // Start the Tone.js audio context and background loop
+                await Tone.start();
+                Tone.Transport.start();
+                
+                // Start the game loop
+                if (gameLoopId) {
+                    cancelAnimationFrame(gameLoopId);
+                }
+                update();
+            };
+
+            // End the game
+            const endGame = () => {
+                isGameOver = true;
+                cancelAnimationFrame(gameLoopId);
+                
+                // Stop the background music and play the bomb effect
+                Tone.Transport.stop();
+                bombSynth.triggerAttackRelease('C1', '2n');
+                
+                // --- Visual surprise effect: a bright flash over the canvas
+                ctx.fillStyle = '#ff4d4d';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Set a timeout to clear the flash and show the final message
+                setTimeout(() => {
+                    // Clear the flash
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    
+                    // Re-draw background
+                    ctx.fillStyle = canvasBgColor;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                    // Draw Game Over and Score text on the canvas
+                    ctx.fillStyle = '#ef4444';
+                    ctx.textAlign = 'center';
+                    ctx.font = 'bold 48px "Inter", sans-serif';
+                    ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 40);
+                    
+                    // Draw the final score text and value in white
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = '24px "Inter", sans-serif';
+                    ctx.fillText(`Final Score: ${score}`, canvas.width / 2, canvas.height / 2);
+
+                    // Show the message box and retry button
+                    messageText.textContent = `You scored ${score} points.`;
+                    messageBox.classList.remove('hidden');
+                    retryBtn.classList.remove('hidden');
+                }, 200); // The flash lasts for 200 milliseconds
+            };
+
+            // Initial button click handlers for difficulty
+            easyBtn.addEventListener('click', () => startGame('easy'));
+            hardBtn.addEventListener('click', () => startGame('hard'));
+            retryBtn.addEventListener('click', () => {
+                if (currentDifficulty) {
+                    startGame(currentDifficulty);
+                }
+            });
+
+            // Initial game setup
+            draw();
+            messageText.textContent = "Choose a difficulty level to begin!";
+            messageBox.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
