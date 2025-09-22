@@ -63,6 +63,7 @@ function drawLineDash(ctx){
 }
 function transformation(ctx){
      ctx.transform(1,0.2,0.5,1,10,15) //transform(ax+cy+e,bx+dy+f)
+     ctx.fillStyle='red'
      /*
      1 scale horizontally
      0.2 skew at y axis
@@ -73,6 +74,9 @@ function transformation(ctx){
 
      */
     //have one method more same work as it is a =>ctx.setTransform(1,0.2,0.5,1,10,15)
+    ctx.fillRect(0,0,120,120)
+    ctx.resetTransform() //you can also reset the transform method
+    ctx.fillStyle="blue"
     ctx.fillRect(0,0,120,120)
 }
 function main(){
