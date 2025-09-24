@@ -1,0 +1,87 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    user-select: none;         /* disable text selection */
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none;     /* IE/Edge */
+    -webkit-touch-callout: none; /* disable iOS long-press menu */
+    outline: none; 
+}
+html{
+    width: 100dvw;
+    font-size: 16px;
+}
+:root{
+    --game-name:normal 600 1.6rem/1 Bitcount Ink;
+    --btns-font:2rem/1.5 "Press Start 2P" ;
+}
+body{
+    width: 100%;
+    overflow-x: hidden;
+    background-color:#e7e7f9;
+    
+}
+header{
+    display: flex;
+    flex-direction: row;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height:8vh;
+    background-color:transparent;
+    border-bottom: 2px solid #cdc8ec;
+    margin-bottom: 3vh;
+}
+#game-title{
+    font:var(--game-name);
+    text-align: center;
+    text-transform: uppercase;
+}
+.game-ctn{
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.gamepad{
+    width: 80%;
+    height: 80%;
+    display: block;
+    border: none;
+    border-radius: 12px;
+    background-color: #0c0c0cc7;
+    box-shadow: 0px 0px 20px -5px darkviolet;
+    margin-bottom: 3vh;
+}
+.control-btn{
+    width: 75%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    overflow: hidden;
+}
+.play-btn{
+    font: var(--btns-font);
+    width: 60px;
+    height: 60px;
+    border-radius: 50% !important;
+    border: none;
+    background: linear-gradient(212deg ,#c5cddc 0%, #b5e7e7 30%,violet 100% );
+    color:#213d71;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    user-select: none;         /* disable text selection */
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none;     /* IE/Edge */
+    -webkit-touch-callout: none; /* disable iOS long-press menu */
+    outline: none; 
+}
+.tets{
+    color:red;
+}
