@@ -41,34 +41,35 @@ const playerWidth = 120;
 const playerHeight = 30;
 let cw = Math.floor(canvasWidth-20) //width of canvas with -20 and only integer.
 let step = 0; //use this to move player.
-let y = 0 //use this to move shapes from top to bottom
+let shapesSteps = 0 //use this to move shapes from top to bottom
 let smallStarShapesX =Math.floor(Math.random()*(cw-0+1)+0)
 let largeStarShapesX = Math.floor(Math.random()*(cw-0+1)+0)
-
-let starShapesTimeInterval = 800;
-let playerXintial = -2;
-const playerYDefault = canvasHeight - playerHeight-2;
-let timeInterval;
+let showLargeStarShapes = true;
+let movingTiming =30;
+let shapesInterval;
+let playerXintial = 0;
+const playerYDefault = canvasHeight - playerHeight;
 let lefTimeInterval , rightTimeInterval
 const longPress = 200;
 function handleLongPress(direction){
     if(direction === "left"){
-        if(playerXintial + step > 5){
-            ctx.clearRect(playerXintial+playerWidth-4, playerYDefault, canvasWidth, playerHeight);
+        if(playerXintial + step > 0){
+            ctx.clearRect(playerXintial+step, playerYDefault, 
+                playerWidth, playerHeight);
             step-=25
             redraw()
         }
     }else if(direction === "right"){
         if(playerXintial+step+playerWidth < canvasWidth){
             ctx.clearRect(playerXintial, playerYDefault, canvasWidth, playerHeight);
-            console.log('right start = ',step)
             step+=25;
             redraw()
         }
     }
 }
+let xinterval;
 //let make shapes
-const smallStarShapes = (x,y) =>{
+const drawsmallStarShapes = (x,y) =>{
     ctx.beginPath()
     let x1 = x;
     let y1 = y;
@@ -78,138 +79,156 @@ const smallStarShapes = (x,y) =>{
     let y3 = y2+15;
     let x4 = x3-15;
     let y4 = y3+15;
-    ctx.moveTo(x1,y1) //(x1,y1)
+    let xt = ctx.moveTo(x1,y1) //(x1,y1)
     // ctx.rect(x,120,120,60)
     ctx.lineTo(x2,y2) //(x2,y2)
     ctx.lineTo(x3,y3) //(x3,y3)
     ctx.lineTo(x4,y4) //(x4,y4)
     ctx.closePath()
-    ctx.fillStyle="yellowGreen"
+    ctx.fillStyle="yellowGreen";
     ctx.fill()
 }
-const smallRoundRects=()=>{
-    let cw = Math.floor(canvasWidth-20)
-    let x = Math.floor(Math.random()*(cw-0+1)+0)
+const drawLargeStarShapes = () =>{
     ctx.beginPath()
-    let gradient = ctx.createLinearGradient(x,150,x+30,240)
-    gradient.addColorStop(0.4,'cornflowerblue')
-    gradient.addColorStop(0.6,'greenyellow')
-    gradient.addColorStop(1,'#e056aecf')
-    ctx.fillStyle = gradient;
-    ctx.roundRect(x,150,30,90,4)
+    ctx.fillStyle="red"
+    ctx.fillRect(120,50,80,40)
     ctx.fill()
-}
-const smallTriangleShapes =()=>{
-    let cw = Math.floor(canvasWidth-20)
-    let x = Math.floor(Math.random()*(cw - 0 + 1)+0)
-    ctx.beginPath();
-    let gradient = ctx.createLinearGradient(x,195,x+30,220  )
-    gradient.addColorStop(0.3,'yellow')
-    gradient.addColorStop(0.4,'pink')
-    gradient.addColorStop(0.9,'green')
-    gradient.addColorStop(1,'darkgreen')
-    ctx.fillStyle = gradient;
-    ctx.moveTo(x,220)
-    ctx.lineTo(x+15,195)
-    ctx.lineTo(x+30,220)
-    ctx.closePath()
-    ctx.fill()
-}
-const smallCircleShapes=()=>{
-    let cw = Math.floor(canvasWidth-20);
-    let x = Math.floor(Math.random()*(cw-0+1)+0)
-    ctx.beginPath();
-    let gradient = ctx.createRadialGradient(x,400,7.5,x,400,15)
-    gradient.addColorStop(0.1,'dodgerblue')
-    gradient.addColorStop(0.4,'deepskyblue')
-    gradient.addColorStop(0.9,'cornflowerblue')
-    gradient.addColorStop(1,'deepskyblue')
-    ctx.fillStyle = gradient;
-    ctx.arc(x,400,15,0,Math.PI*2)
-    ctx.fill()
+    // let x1 = x;
+    // let y1 = y;
+    // let x2 = x1+30;
+    // let y2 = y1-30;
+    // let x3 = x2+30;
+    // let y3 = y2+30;
+    // let x4 = x3-30;
+    // let y4 = y3+30;
+    // ctx.fillStyle="#e056aecf"
+    // ctx.moveTo(x1,y1) //(x1,y1)
+    // ctx.lineTo(x2,y2) //(x2,y2)
+    // ctx.lineTo(x3,y3) //(x3,y3)
+    // ctx.lineTo(x4,y4) //(x4,y4)
+    // ctx.closePath()
+    // ctx.fill()
+    // ctx.save()
 }
 
-function drawHeart(){
-    ctx.beginPath()
-    ctx.moveTo(120,120)
-    ctx.bezierCurveTo(60,80,100,40,120,60)
-    ctx.bezierCurveTo(140,40,180,80,120,120)
-    ctx.fillStyle="darkpink"
-    ctx.fill()
+let y =0;
+function smallStarShapesLoop(){
+    if(shapesSteps){
+        ctx.clearRect(smallStarShapesX,shapesSteps-30,30,35)
+    }
+    shapesSteps+=10
+    if(shapesSteps>canvasHeight){
+        shapesSteps=0
+        smallStarShapesX = Math.floor(Math.random()*(cw-0+1)+0);
+    }
+    drawsmallStarShapes(smallStarShapesX,shapesSteps)
 }
-const largeCircleShapes=()=>{
-    let cw = Math.floor(canvasWidth-20);
-    let x = Math.floor(Math.random()*(cw-0+1)+0)
-    ctx.beginPath();
-    ctx.arc(x,400,25,0,Math.PI*2)
-    ctx.fillStyle="#e056aecf";
-    ctx.fill()
+function largeStarShapesLoop(){
+    if(shapesSteps)ctx.clearRect(largeStarShapesX,shapesSteps-30,60,60)
+    shapesSteps+=15;
+    if(shapesSteps>canvasHeight-playerHeight){
+        shapesSteps=0;
+        largeStarShapesX = Math.floor(Math.random()*(cw-0+1)+0);
+    }
+    drawsmallStarShapes(smallStarShapesX,shapesSteps)
 }
-const largeTriangleShapes =()=>{
-    let cw = Math.floor(canvasWidth-20)
-    let x = Math.floor(Math.random()*(cw - 0 + 1)+0)
-    ctx.beginPath();
-    let gradient = ctx.createLinearGradient(x,170,x+60,220)
-    gradient.addColorStop(0.3,'yellow')
-    gradient.addColorStop(0.4,'pink')
-    gradient.addColorStop(0.9,'green')
-    gradient.addColorStop(1,'darkgreen')
-    ctx.fillStyle = gradient;
-    ctx.moveTo(x,220)
-    ctx.lineTo(x+30,170)
-    ctx.lineTo(x+60,220)
-    ctx.closePath()
-    ctx.fill()
-}
-const largeRoundRects=()=>{
-    let cw = Math.floor(canvasWidth-20)
-    let x = Math.floor(Math.random()*(cw-0+1)+0)
-    ctx.beginPath()
-    let gradient = ctx.createLinearGradient(x,150,x+30,240)
-    gradient.addColorStop(0.5,'cornflowerblue')
-    gradient.addColorStop(0.8,'greenyellow')
-    gradient.addColorStop(1,'#e056aecf')
-    ctx.fillStyle = gradient;
-    ctx.roundRect(x,150,45,120,8)
-    ctx.fill()
-}
-const largeStarShapes = (x,y) =>{
-    ctx.beginPath()
-    let x1 = x;
-    let y1 = y;
-    let x2 = x1+30;
-    let y2 = y1-30;
-    let x3 = x2+30;
-    let y3 = y2+30;
-    let x4 = x3-30;
-    let y4 = y3+30;
-    ctx.moveTo(x1,y1) //(x1,y1)
-    // ctx.rect(x,120,120,60)
-    ctx.lineTo(x2,y2) //(x2,y2)
-    ctx.lineTo(x3,y3) //(x3,y3)
-    ctx.lineTo(x4,y4) //(x4,y4)
-    ctx.closePath()
-    ctx.fillStyle="#e056aecf"
-    ctx.fill()
-}
-function showStarShapes(x1,x2,y){
-    setTimeout(()=>{
-        smallStarShapes(x1,y)
-    },starShapesTimeInterval)
-    largeStarShapes(x2,y)
-}
-do{
-    ctx.clearRect(smallStarShapesX, y, canvas.width, canvas.height);
-    showStarShapes(smallStarShapesX,largeStarShapesX,y)
-    y+=10;
-}while (y<canvasHeight)
-smallRoundRects()
-largeRoundRects()
-smallTriangleShapes()
-largeTriangleShapes()
-smallCircleShapes()
-largeCircleShapes()
-drawHeart()
+drawLargeStarShapes()
+// setInterval(smallStarShapesLoop,movingTiming) //set for looping after every 30ms
+// console.log(canvasHeight)
+// const smallRoundRects=()=>{
+//     let cw = Math.floor(canvasWidth-20)
+//     let x = Math.floor(Math.random()*(cw-0+1)+0)
+//     ctx.beginPath()
+//     let gradient = ctx.createLinearGradient(x,150,x+30,240)
+//     gradient.addColorStop(0.4,'cornflowerblue')
+//     gradient.addColorStop(0.6,'greenyellow')
+//     gradient.addColorStop(1,'#e056aecf')
+//     ctx.fillStyle = gradient;
+//     ctx.roundRect(x,150,30,90,4)
+//     ctx.fill()
+// }
+// const smallTriangleShapes =()=>{
+//     let cw = Math.floor(canvasWidth-20)
+//     let x = Math.floor(Math.random()*(cw - 0 + 1)+0)
+//     ctx.beginPath();
+//     let gradient = ctx.createLinearGradient(x,195,x+30,220  )
+//     gradient.addColorStop(0.3,'yellow')
+//     gradient.addColorStop(0.4,'pink')
+//     gradient.addColorStop(0.9,'green')
+//     gradient.addColorStop(1,'darkgreen')
+//     ctx.fillStyle = gradient;
+//     ctx.moveTo(x,220)
+//     ctx.lineTo(x+15,195)
+//     ctx.lineTo(x+30,220)
+//     ctx.closePath()
+//     ctx.fill()
+// }
+// const smallCircleShapes=()=>{
+//     let cw = Math.floor(canvasWidth-20);
+//     let x = Math.floor(Math.random()*(cw-0+1)+0)
+//     ctx.beginPath();
+//     let gradient = ctx.createRadialGradient(x,400,7.5,x,400,15)
+//     gradient.addColorStop(0.1,'dodgerblue')
+//     gradient.addColorStop(0.4,'deepskyblue')
+//     gradient.addColorStop(0.9,'cornflowerblue')
+//     gradient.addColorStop(1,'deepskyblue')
+//     ctx.fillStyle = gradient;
+//     ctx.arc(x,400,15,0,Math.PI*2)
+//     ctx.fill()
+// }
+
+// function drawHeart(){
+//     ctx.beginPath()
+//     ctx.moveTo(120,120)
+//     ctx.bezierCurveTo(60,80,100,40,120,60)
+//     ctx.bezierCurveTo(140,40,180,80,120,120)
+//     ctx.fillStyle="darkpink"
+//     ctx.fill()
+// }
+// const largeCircleShapes=()=>{
+//     let cw = Math.floor(canvasWidth-20);
+//     let x = Math.floor(Math.random()*(cw-0+1)+0)
+//     ctx.beginPath();
+//     ctx.arc(x,400,25,0,Math.PI*2)
+//     ctx.fillStyle="#e056aecf";
+//     ctx.fill()
+// }
+// const largeTriangleShapes =()=>{
+//     let cw = Math.floor(canvasWidth-20)
+//     let x = Math.floor(Math.random()*(cw - 0 + 1)+0)
+//     ctx.beginPath();
+//     let gradient = ctx.createLinearGradient(x,170,x+60,220)
+//     gradient.addColorStop(0.3,'yellow')
+//     gradient.addColorStop(0.4,'pink')
+//     gradient.addColorStop(0.9,'green')
+//     gradient.addColorStop(1,'darkgreen')
+//     ctx.fillStyle = gradient;
+//     ctx.moveTo(x,220)
+//     ctx.lineTo(x+30,170)
+//     ctx.lineTo(x+60,220)
+//     ctx.closePath()
+//     ctx.fill()
+// }
+// const largeRoundRects=()=>{
+//     let cw = Math.floor(canvasWidth-20)
+//     let x = Math.floor(Math.random()*(cw-0+1)+0)
+//     ctx.beginPath()
+//     let gradient = ctx.createLinearGradient(x,150,x+30,240)
+//     gradient.addColorStop(0.5,'cornflowerblue')
+//     gradient.addColorStop(0.8,'greenyellow')
+//     gradient.addColorStop(1,'#e056aecf')
+//     ctx.fillStyle = gradient;
+//     ctx.roundRect(x,150,45,120,8)
+//     ctx.fill()
+// }
+
+// smallRoundRects()
+// largeRoundRects()
+// smallTriangleShapes()
+// largeTriangleShapes()
+// smallCircleShapes()
+// largeCircleShapes()
+// drawHeart()
 
 //for mobile devices
 leftBtn.addEventListener('touchstart',(ev)=>{
