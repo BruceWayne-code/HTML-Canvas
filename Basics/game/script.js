@@ -41,11 +41,18 @@ const playerWidth = 120;
 const playerHeight = 30;
 let cw = Math.floor(canvasWidth-20) //width of canvas with -20 and only integer.
 let step = 0; //use this to move player.
-let shapesSteps = 0 //use this to move shapes from top to bottom
-let smallStarShapesX =Math.floor(Math.random()*(cw-0+1)+0)
-let largeStarShapesX = Math.floor(Math.random()*(cw-0+1)+0)
+let smallStarShapesSteps = 0 //use this to move shapes from top to bottom
+let largeStarShapesSteps = 0 
+let smallRoundRectsSteps =0 ;
+let largeRoundRectsSteps =0 ;
+let drawHeartSteps = 0;
+let smallStarShapesX =Math.floor(Math.random()*(cw-0+1)+0);
+let largeStarShapesX = Math.floor(Math.random()*(cw-0+1)+0);
+let smallRoundRectsX = Math.floor(Math.random()*(cw-0+1)+0);
+let largeRoundRectsX =Math.floor(Math.random()*(cw-0+1)+0);
+let drawHeartx =Math.floor(Math.random()*(cw-0+1)+0);
 let showLargeStarShapes = true;
-let movingTiming =30;
+let movingTiming =60;
 let shapesInterval;
 let playerXintial = 0;
 const playerYDefault = canvasHeight - playerHeight;
@@ -61,7 +68,7 @@ function handleLongPress(direction){
         }
     }else if(direction === "right"){
         if(playerXintial+step+playerWidth < canvasWidth){
-            ctx.clearRect(playerXintial, playerYDefault, canvasWidth, playerHeight);
+            ctx.clearRect(playerXintial+step, playerYDefault, playerWidth, playerHeight);
             step+=25;
             redraw()
         }
@@ -69,7 +76,7 @@ function handleLongPress(direction){
 }
 let xinterval;
 //let make shapes
-const drawsmallStarShapes = (x,y) =>{
+const drawSmallStarShapes = (x,y) =>{
     ctx.beginPath()
     let x1 = x;
     let y1 = y;
@@ -88,65 +95,129 @@ const drawsmallStarShapes = (x,y) =>{
     ctx.fillStyle="yellowGreen";
     ctx.fill()
 }
-const drawLargeStarShapes = () =>{
+const drawLargeStarShapes = (x,y) =>{
     ctx.beginPath()
-    ctx.fillStyle="red"
-    ctx.fillRect(120,50,80,40)
+    let x1 = x;
+    let y1 = y;
+    let x2 = x1+30;
+    let y2 = y1-30;
+    let x3 = x2+30;
+    let y3 = y2+30;
+    let x4 = x3-30;
+    let y4 = y3+30;
+    ctx.fillStyle="#e056aecf"
+    ctx.moveTo(x1,y1) //(x1,y1)
+    ctx.lineTo(x2,y2) //(x2,y2)
+    ctx.lineTo(x3,y3) //(x3,y3)
+    ctx.lineTo(x4,y4) //(x4,y4)
+    ctx.closePath()
     ctx.fill()
-    // let x1 = x;
-    // let y1 = y;
-    // let x2 = x1+30;
-    // let y2 = y1-30;
-    // let x3 = x2+30;
-    // let y3 = y2+30;
-    // let x4 = x3-30;
-    // let y4 = y3+30;
-    // ctx.fillStyle="#e056aecf"
-    // ctx.moveTo(x1,y1) //(x1,y1)
-    // ctx.lineTo(x2,y2) //(x2,y2)
-    // ctx.lineTo(x3,y3) //(x3,y3)
-    // ctx.lineTo(x4,y4) //(x4,y4)
-    // ctx.closePath()
-    // ctx.fill()
-    // ctx.save()
+    ctx.save()
 }
 
-let y =0;
 function smallStarShapesLoop(){
-    if(shapesSteps){
-        ctx.clearRect(smallStarShapesX,shapesSteps-30,30,35)
-    }
-    shapesSteps+=10
-    if(shapesSteps>canvasHeight){
-        shapesSteps=0
+    ctx.clearRect(smallStarShapesX,smallStarShapesSteps-30,30,35)
+    smallStarShapesSteps+=3
+    if(smallStarShapesSteps>canvasHeight){
+        smallStarShapesSteps=0
         smallStarShapesX = Math.floor(Math.random()*(cw-0+1)+0);
     }
-    drawsmallStarShapes(smallStarShapesX,shapesSteps)
+    drawSmallStarShapes(smallStarShapesX,smallStarShapesSteps)
 }
 function largeStarShapesLoop(){
-    if(shapesSteps)ctx.clearRect(largeStarShapesX,shapesSteps-30,60,60)
-    shapesSteps+=15;
-    if(shapesSteps>canvasHeight-playerHeight){
-        shapesSteps=0;
-        largeStarShapesX = Math.floor(Math.random()*(cw-0+1)+0);
+    ctx.clearRect(largeStarShapesX,largeStarShapesSteps-30,60,65)
+    largeStarShapesSteps+=10;
+    if(largeStarShapesSteps>canvasHeight){
+        largeStarShapesSteps=0;
+        largeStarShapesX = Math.floor(Math.random()*(cw-0+1)+0)
     }
-    drawsmallStarShapes(smallStarShapesX,shapesSteps)
+    drawLargeStarShapes(largeStarShapesX,largeStarShapesSteps)
 }
-drawLargeStarShapes()
-// setInterval(smallStarShapesLoop,movingTiming) //set for looping after every 30ms
-// console.log(canvasHeight)
-// const smallRoundRects=()=>{
-//     let cw = Math.floor(canvasWidth-20)
-//     let x = Math.floor(Math.random()*(cw-0+1)+0)
-//     ctx.beginPath()
-//     let gradient = ctx.createLinearGradient(x,150,x+30,240)
-//     gradient.addColorStop(0.4,'cornflowerblue')
-//     gradient.addColorStop(0.6,'greenyellow')
-//     gradient.addColorStop(1,'#e056aecf')
-//     ctx.fillStyle = gradient;
-//     ctx.roundRect(x,150,30,90,4)
-//     ctx.fill()
-// }
+const smallRoundRects=(x,y)=>{
+    ctx.beginPath()
+    let gradient = ctx.createLinearGradient(x,y,x+30,y+90)
+    gradient.addColorStop(0.4,'cornflowerblue')
+    gradient.addColorStop(0.6,'greenyellow')
+    gradient.addColorStop(1,'#e056aecf')
+    ctx.fillStyle = gradient;
+    ctx.roundRect(x,y,30,90,4)
+    ctx.fill()
+}
+const largeRoundRects=(x=0,y=0)=>{
+    ctx.beginPath()
+    let gradient = ctx.createLinearGradient(x,y,x+45,y+120)
+    gradient.addColorStop(0.5,'cornflowerblue')
+    gradient.addColorStop(0.8,'greenyellow')
+    gradient.addColorStop(1,'#e056aecf')
+    ctx.fillStyle = gradient;
+    ctx.roundRect(largeRoundRectsX,largeRoundRectsSteps,45,120,8)
+    ctx.fill()
+}
+function smallRoundRectsLoop(){
+    ctx.clearRect(smallRoundRectsX,smallRoundRectsSteps,30,90)
+    smallRoundRectsSteps+=10;
+    if(smallRoundRectsSteps>canvasHeight){
+        smallRoundRectsSteps=0
+        smallRoundRectsX = Math.floor(Math.random()*(cw-0+1)+0);
+    }
+    smallRoundRects(smallRoundRectsX,smallRoundRectsSteps)
+}
+function largeRoundRectsLoop(){
+    ctx.clearRect(largeRoundRectsX,largeRoundRectsSteps,45,120)
+    largeRoundRectsSteps+=10;
+    if(largeRoundRectsSteps>canvasHeight){
+        largeRoundRectsSteps=0;
+        largeRoundRectsX = Math.floor(Math.random()*(cw-0+1)+0);
+    }
+    largeRoundRects(largeRoundRectsX,largeRoundRectsSteps)
+}
+function drawHeart(x,y){
+    ctx.beginPath()
+    let x1=x
+    let y1 =y;
+    let x2=x1-60;
+    let y2=y1-40;
+    let x3=x2+40;
+    let y3=y2-40
+    let x4=x3+20;
+    let y4=y3+20;
+    let x5=x4+20;
+    let y5=y4-20;
+    let x6=x5+40
+    let y6=y5+40;
+    let x7=x6-60;
+    let y7=y6+40;
+    ctx.moveTo(x1,y1)
+    ctx.fillStyle="#be2887ff"
+    ctx.bezierCurveTo(x2,y2,x3,y3,x4,y4)
+    ctx.bezierCurveTo(x5,y5,x6,y6,x7,y7)
+    ctx.fill()
+}
+function drawHeartLoop(){
+    ctx.clearRect(drawHeartx-40,drawHeartSteps-80,140,120)
+    drawHeartSteps+=20;
+    if(drawHeartSteps>canvasHeight){
+        drawHeartSteps=0;
+        drawHeartx = Math.floor(Math.random()*(cw-0+1)+0);
+    }
+    drawHeart(drawHeartx,drawHeartSteps)
+}
+
+setInterval(()=>{
+    smallStarShapesLoop();
+},10) 
+setInterval(()=>{
+    largeStarShapesLoop()
+},15)
+setInterval(()=>{
+    smallRoundRectsLoop()
+},35)
+setInterval(()=>{
+    largeRoundRectsLoop()
+},25)
+setInterval(()=>{
+    drawHeartLoop()
+},80)
 // const smallTriangleShapes =()=>{
 //     let cw = Math.floor(canvasWidth-20)
 //     let x = Math.floor(Math.random()*(cw - 0 + 1)+0)
@@ -177,14 +248,7 @@ drawLargeStarShapes()
 //     ctx.fill()
 // }
 
-// function drawHeart(){
-//     ctx.beginPath()
-//     ctx.moveTo(120,120)
-//     ctx.bezierCurveTo(60,80,100,40,120,60)
-//     ctx.bezierCurveTo(140,40,180,80,120,120)
-//     ctx.fillStyle="darkpink"
-//     ctx.fill()
-// }
+
 // const largeCircleShapes=()=>{
 //     let cw = Math.floor(canvasWidth-20);
 //     let x = Math.floor(Math.random()*(cw-0+1)+0)
@@ -209,21 +273,8 @@ drawLargeStarShapes()
 //     ctx.closePath()
 //     ctx.fill()
 // }
-// const largeRoundRects=()=>{
-//     let cw = Math.floor(canvasWidth-20)
-//     let x = Math.floor(Math.random()*(cw-0+1)+0)
-//     ctx.beginPath()
-//     let gradient = ctx.createLinearGradient(x,150,x+30,240)
-//     gradient.addColorStop(0.5,'cornflowerblue')
-//     gradient.addColorStop(0.8,'greenyellow')
-//     gradient.addColorStop(1,'#e056aecf')
-//     ctx.fillStyle = gradient;
-//     ctx.roundRect(x,150,45,120,8)
-//     ctx.fill()
-// }
 
-// smallRoundRects()
-// largeRoundRects()
+
 // smallTriangleShapes()
 // largeTriangleShapes()
 // smallCircleShapes()
