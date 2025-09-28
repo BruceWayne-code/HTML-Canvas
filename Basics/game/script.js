@@ -2,7 +2,9 @@ function drawPlayer(){
     ctx.beginPath()
     ctx.roundRect(playerXintial+playerStep,playerYDefault,playerWidth,playerHeight,4)
     ctx.fillStyle = "rgba(230, 249, 249, 1) "
-    ctx.fill()
+    ctx.fill() 
+    // console.log(playerXintial+playerStep,playerYDefault)
+    // console.log(ctx.isPointInPath(0,443.49,'nonzero'))
 }
 function redraw(){
     drawPlayer()
@@ -41,6 +43,7 @@ if(window.innerWidth > 1220){
 }
 const playerHeight = 30;
 let cw = Math.floor(canvasWidth-20) //width of canvas with -20 and only integer.
+let player;
 let playerStep = 0; //use this to move player.
 let smallStarShapesSteps =0 //use this to move shapes from top to bottom
 let largeStarShapesSteps = 0 
@@ -62,6 +65,7 @@ let mainGameLoopTiming = 50;
 let playerXintial = 0;
 const playerYDefault = canvasHeight - playerHeight;
 let lefTimeInterval , rightTimeInterval
+let shape1X ,shape1Y;
 const longPress = 200;
 function handleLongPress(direction){
     if(direction === "left"){
