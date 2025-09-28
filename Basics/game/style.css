@@ -20,7 +20,6 @@ body{
     width: 100%;
     overflow-x: hidden;
     background-color:#e7e7f9;
-    
 }
 header{
     display: flex;
@@ -32,6 +31,12 @@ header{
     background-color:transparent;
     border-bottom: 2px solid #cdc8ec;
     margin-bottom: 3vh;
+}
+main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 #game-title{
     font:var(--game-name);
@@ -63,6 +68,7 @@ header{
     flex-direction: row;
     justify-content: space-between;
     overflow: hidden;
+    
 }
 .play-btn{
     font: var(--btns-font);
@@ -81,7 +87,22 @@ header{
     -ms-user-select: none;     /* IE/Edge */
     -webkit-touch-callout: none; /* disable iOS long-press menu */
     outline: none; 
+    
 }
 .tets{
-    color:#750e4f;
+    color:rgba(126, 252, 0, 0.756);
+}
+@media (min-width:1220px) {
+    :root{
+        --game-name:normal 600 3rem/1 Bitcount Ink;
+    }
+    header{
+        border-bottom-width: 4px;
+    }
+    .game-ctn{
+        width: 50% !important;
+    }
+    .control-btn{
+        display: none;
+    }
 }

@@ -1,7 +1,7 @@
 function drawPlayer(){
     ctx.beginPath()
-    ctx.roundRect(playerXintial+step,playerYDefault,playerWidth,playerHeight,4)
-    ctx.fillStyle = " #9b9789ff"
+    ctx.roundRect(playerXintial+playerStep,playerYDefault,playerWidth,playerHeight,4)
+    ctx.fillStyle = "rgba(230, 249, 249, 1) "
     ctx.fill()
 }
 function redraw(){
@@ -22,10 +22,6 @@ function resizeCanvas(){
     canvasHeight = canvas[0].height / dpr
     ctx.clearRect(0,0,canvas[0].width,canvas[0].height)
 }
-// import number
-// function getRandomNumber(min,max){
-//     return Math.floor(Math.random()*(max-min+1)+min);
-// }
 const canvas = document.querySelectorAll('.gamepad');
 const parent = canvas[0].parentElement
 const ctx  = canvas[0].getContext('2d');
@@ -37,44 +33,52 @@ leftBtn.addEventListener("contextmenu", e => e.preventDefault());
 rightBtn.addEventListener("contextmenu", e => e.preventDefault());
 leftBtn.addEventListener("touchstart", e => e.preventDefault());
 rightBtn.addEventListener("touchstart", e => e.preventDefault());
-const playerWidth = 120;
+let playerWidth;
+if(window.innerWidth > 1220){
+    playerWidth = 280;
+}else{
+    playerWidth=120;
+}
 const playerHeight = 30;
 let cw = Math.floor(canvasWidth-20) //width of canvas with -20 and only integer.
-let step = 0; //use this to move player.
-let smallStarShapesSteps = 0 //use this to move shapes from top to bottom
+let playerStep = 0; //use this to move player.
+let smallStarShapesSteps =0 //use this to move shapes from top to bottom
 let largeStarShapesSteps = 0 
 let smallRoundRectsSteps =0 ;
 let largeRoundRectsSteps =0 ;
-let drawHeartSteps = 0;
-let smallStarShapesX =Math.floor(Math.random()*(cw-0+1)+0);
+let traingleshapeSteps = 0;
+let drawHeartSteps =0;
+let circleShapeSteps =0;
+let smallStarShapesX = Math.floor(Math.random()*(cw-0+1)+0);
 let largeStarShapesX = Math.floor(Math.random()*(cw-0+1)+0);
 let smallRoundRectsX = Math.floor(Math.random()*(cw-0+1)+0);
-let largeRoundRectsX =Math.floor(Math.random()*(cw-0+1)+0);
-let drawHeartx =Math.floor(Math.random()*(cw-0+1)+0);
-let showLargeStarShapes = true;
-let movingTiming =60;
-let shapesInterval;
+let largeRoundRectsX = Math.floor(Math.random()*(cw-0+1)+0);
+let drawHeartx = Math.floor(Math.random()*(cw-0+1)+0);
+let traingleShapeX = Math.floor(Math.random()*(cw-0+1)+0);
+let circleShapeX = Math.floor(Math.random()*(cw-0+1)+0);
+let whichGroup = 'group1';
+let group1Interval , group2Interval;
+let mainGameLoopTiming = 50;
 let playerXintial = 0;
 const playerYDefault = canvasHeight - playerHeight;
 let lefTimeInterval , rightTimeInterval
 const longPress = 200;
 function handleLongPress(direction){
     if(direction === "left"){
-        if(playerXintial + step > 0){
-            ctx.clearRect(playerXintial+step, playerYDefault, 
-                playerWidth, playerHeight);
-            step-=25
+        if(playerXintial + playerStep > 0){
+            ctx.clearRect(playerXintial+playerStep, playerYDefault,
+                canvasWidth, playerHeight);
+            playerStep-=25
             redraw()
         }
     }else if(direction === "right"){
-        if(playerXintial+step+playerWidth < canvasWidth){
-            ctx.clearRect(playerXintial+step, playerYDefault, playerWidth, playerHeight);
-            step+=25;
+        if(playerXintial+playerStep+playerWidth < canvasWidth){
+            ctx.clearRect(playerXintial+playerStep, playerYDefault, canvasWidth, playerHeight);
+            playerStep+=25;
             redraw()
         }
     }
 }
-let xinterval;
 //let make shapes
 const drawSmallStarShapes = (x,y) =>{
     ctx.beginPath()
@@ -87,89 +91,12 @@ const drawSmallStarShapes = (x,y) =>{
     let x4 = x3-15;
     let y4 = y3+15;
     let xt = ctx.moveTo(x1,y1) //(x1,y1)
-    // ctx.rect(x,120,120,60)
     ctx.lineTo(x2,y2) //(x2,y2)
     ctx.lineTo(x3,y3) //(x3,y3)
     ctx.lineTo(x4,y4) //(x4,y4)
     ctx.closePath()
     ctx.fillStyle="yellowGreen";
     ctx.fill()
-}
-const drawLargeStarShapes = (x,y) =>{
-    ctx.beginPath()
-    let x1 = x;
-    let y1 = y;
-    let x2 = x1+30;
-    let y2 = y1-30;
-    let x3 = x2+30;
-    let y3 = y2+30;
-    let x4 = x3-30;
-    let y4 = y3+30;
-    ctx.fillStyle="#e056aecf"
-    ctx.moveTo(x1,y1) //(x1,y1)
-    ctx.lineTo(x2,y2) //(x2,y2)
-    ctx.lineTo(x3,y3) //(x3,y3)
-    ctx.lineTo(x4,y4) //(x4,y4)
-    ctx.closePath()
-    ctx.fill()
-    ctx.save()
-}
-
-function smallStarShapesLoop(){
-    ctx.clearRect(smallStarShapesX,smallStarShapesSteps-30,30,35)
-    smallStarShapesSteps+=3
-    if(smallStarShapesSteps>canvasHeight){
-        smallStarShapesSteps=0
-        smallStarShapesX = Math.floor(Math.random()*(cw-0+1)+0);
-    }
-    drawSmallStarShapes(smallStarShapesX,smallStarShapesSteps)
-}
-function largeStarShapesLoop(){
-    ctx.clearRect(largeStarShapesX,largeStarShapesSteps-30,60,65)
-    largeStarShapesSteps+=10;
-    if(largeStarShapesSteps>canvasHeight){
-        largeStarShapesSteps=0;
-        largeStarShapesX = Math.floor(Math.random()*(cw-0+1)+0)
-    }
-    drawLargeStarShapes(largeStarShapesX,largeStarShapesSteps)
-}
-const smallRoundRects=(x,y)=>{
-    ctx.beginPath()
-    let gradient = ctx.createLinearGradient(x,y,x+30,y+90)
-    gradient.addColorStop(0.4,'cornflowerblue')
-    gradient.addColorStop(0.6,'greenyellow')
-    gradient.addColorStop(1,'#e056aecf')
-    ctx.fillStyle = gradient;
-    ctx.roundRect(x,y,30,90,4)
-    ctx.fill()
-}
-const largeRoundRects=(x=0,y=0)=>{
-    ctx.beginPath()
-    let gradient = ctx.createLinearGradient(x,y,x+45,y+120)
-    gradient.addColorStop(0.5,'cornflowerblue')
-    gradient.addColorStop(0.8,'greenyellow')
-    gradient.addColorStop(1,'#e056aecf')
-    ctx.fillStyle = gradient;
-    ctx.roundRect(largeRoundRectsX,largeRoundRectsSteps,45,120,8)
-    ctx.fill()
-}
-function smallRoundRectsLoop(){
-    ctx.clearRect(smallRoundRectsX,smallRoundRectsSteps,30,90)
-    smallRoundRectsSteps+=10;
-    if(smallRoundRectsSteps>canvasHeight){
-        smallRoundRectsSteps=0
-        smallRoundRectsX = Math.floor(Math.random()*(cw-0+1)+0);
-    }
-    smallRoundRects(smallRoundRectsX,smallRoundRectsSteps)
-}
-function largeRoundRectsLoop(){
-    ctx.clearRect(largeRoundRectsX,largeRoundRectsSteps,45,120)
-    largeRoundRectsSteps+=10;
-    if(largeRoundRectsSteps>canvasHeight){
-        largeRoundRectsSteps=0;
-        largeRoundRectsX = Math.floor(Math.random()*(cw-0+1)+0);
-    }
-    largeRoundRects(largeRoundRectsX,largeRoundRectsSteps)
 }
 function drawHeart(x,y){
     ctx.beginPath()
@@ -193,94 +120,130 @@ function drawHeart(x,y){
     ctx.bezierCurveTo(x5,y5,x6,y6,x7,y7)
     ctx.fill()
 }
-function drawHeartLoop(){
-    ctx.clearRect(drawHeartx-40,drawHeartSteps-80,140,120)
-    drawHeartSteps+=20;
-    if(drawHeartSteps>canvasHeight){
-        drawHeartSteps=0;
-        drawHeartx = Math.floor(Math.random()*(cw-0+1)+0);
+const largeRoundRects=(x,y)=>{
+    ctx.beginPath()
+    let gradient = ctx.createLinearGradient(x,y,x+45,y+120)
+    gradient.addColorStop(0.5,'cornflowerblue')
+    gradient.addColorStop(0.8,'greenyellow')
+    gradient.addColorStop(1,'#e056aecf')
+    ctx.fillStyle = gradient;
+    ctx.roundRect(x,y,40,120,4)
+    ctx.fill()
+}
+const circleShape=(x,y)=>{
+    ctx.beginPath();
+    let gradient = ctx.createRadialGradient(x,y,10,x,y,20)
+    gradient.addColorStop(0.1,'dodgerblue')
+    gradient.addColorStop(0.4,'deepskyblue')
+    gradient.addColorStop(0.9,'cornflowerblue')
+    gradient.addColorStop(1,'deepskyblue')
+    ctx.fillStyle = gradient;
+    ctx.arc(x,y,20,0,Math.PI*2)
+    ctx.fill()
+}
+function group1(){
+    "this function is used to good dynamic view of repersantion of each shapes as respective siblings shapes."
+    const group1Completed = smallStarShapesSteps > canvasHeight && drawHeartSteps > canvasHeight  && largeRoundRectsSteps>canvasHeight && circleShapeSteps>canvasHeight;
+    ctx.clearRect(0,0,canvasWidth,canvasHeight)
+    drawHeartSteps+=10
+    smallStarShapesSteps+=20;
+    largeRoundRectsSteps+=14;
+    circleShapeSteps+=12;
+    if(group1Completed){
+        drawHeartSteps=-120
+        smallStarShapesSteps =-30;
+        largeRoundRectsSteps = -120;
+        circleShapeSteps= -40;
+        drawHeartx =  Math.floor(Math.random()*(cw-0+1)+0);
+        smallStarShapesX = Math.floor(Math.random()*(cw-0+1)+0);
+        largeRoundRectsX = Math.floor(Math.random()*(cw-0+1)+0);
+        circleShapeX = Math.floor(Math.random()*(cw-0+1)+0);
+        whichGroup = 'group2';
     }
     drawHeart(drawHeartx,drawHeartSteps)
+    drawSmallStarShapes(smallStarShapesX,smallStarShapesSteps)
+    largeRoundRects(largeRoundRectsX,largeRoundRectsSteps)
+    circleShape(circleShapeX,circleShapeSteps)
+    drawPlayer()
+    
 }
-
-setInterval(()=>{
-    smallStarShapesLoop();
-},10) 
-setInterval(()=>{
-    largeStarShapesLoop()
-},15)
-setInterval(()=>{
-    smallRoundRectsLoop()
-},35)
-setInterval(()=>{
-    largeRoundRectsLoop()
-},25)
-setInterval(()=>{
-    drawHeartLoop()
-},80)
-// const smallTriangleShapes =()=>{
-//     let cw = Math.floor(canvasWidth-20)
-//     let x = Math.floor(Math.random()*(cw - 0 + 1)+0)
-//     ctx.beginPath();
-//     let gradient = ctx.createLinearGradient(x,195,x+30,220  )
-//     gradient.addColorStop(0.3,'yellow')
-//     gradient.addColorStop(0.4,'pink')
-//     gradient.addColorStop(0.9,'green')
-//     gradient.addColorStop(1,'darkgreen')
-//     ctx.fillStyle = gradient;
-//     ctx.moveTo(x,220)
-//     ctx.lineTo(x+15,195)
-//     ctx.lineTo(x+30,220)
-//     ctx.closePath()
-//     ctx.fill()
-// }
-// const smallCircleShapes=()=>{
-//     let cw = Math.floor(canvasWidth-20);
-//     let x = Math.floor(Math.random()*(cw-0+1)+0)
-//     ctx.beginPath();
-//     let gradient = ctx.createRadialGradient(x,400,7.5,x,400,15)
-//     gradient.addColorStop(0.1,'dodgerblue')
-//     gradient.addColorStop(0.4,'deepskyblue')
-//     gradient.addColorStop(0.9,'cornflowerblue')
-//     gradient.addColorStop(1,'deepskyblue')
-//     ctx.fillStyle = gradient;
-//     ctx.arc(x,400,15,0,Math.PI*2)
-//     ctx.fill()
-// }
-
-
-// const largeCircleShapes=()=>{
-//     let cw = Math.floor(canvasWidth-20);
-//     let x = Math.floor(Math.random()*(cw-0+1)+0)
-//     ctx.beginPath();
-//     ctx.arc(x,400,25,0,Math.PI*2)
-//     ctx.fillStyle="#e056aecf";
-//     ctx.fill()
-// }
-// const largeTriangleShapes =()=>{
-//     let cw = Math.floor(canvasWidth-20)
-//     let x = Math.floor(Math.random()*(cw - 0 + 1)+0)
-//     ctx.beginPath();
-//     let gradient = ctx.createLinearGradient(x,170,x+60,220)
-//     gradient.addColorStop(0.3,'yellow')
-//     gradient.addColorStop(0.4,'pink')
-//     gradient.addColorStop(0.9,'green')
-//     gradient.addColorStop(1,'darkgreen')
-//     ctx.fillStyle = gradient;
-//     ctx.moveTo(x,220)
-//     ctx.lineTo(x+30,170)
-//     ctx.lineTo(x+60,220)
-//     ctx.closePath()
-//     ctx.fill()
-// }
-
-
-// smallTriangleShapes()
-// largeTriangleShapes()
-// smallCircleShapes()
-// largeCircleShapes()
-// drawHeart()
-
+const drawLargeStarShapes = (x,y) =>{
+    ctx.beginPath()
+    let x1 = x;
+    let y1 = y;
+    let x2 = x1+30;
+    let y2 = y1-30;
+    let x3 = x2+30;
+    let y3 = y2+30;
+    let x4 = x3-30;
+    let y4 = y3+30;
+    ctx.fillStyle="#e056aecf"
+    ctx.moveTo(x1,y1) //(x1,y1)
+    ctx.lineTo(x2,y2) //(x2,y2)
+    ctx.lineTo(x3,y3) //(x3,y3)
+    ctx.lineTo(x4,y4) //(x4,y4)
+    ctx.closePath()
+    ctx.fill()
+    ctx.save()
+}
+const smallRoundRects=(x,y)=>{
+    ctx.beginPath()
+    let gradient = ctx.createLinearGradient(x,y,x+20,y+90)
+    gradient.addColorStop(0.4,'cornflowerblue')
+    gradient.addColorStop(0.6,'greenyellow')
+    gradient.addColorStop(1,'#e056aecf')
+    ctx.fillStyle = gradient;
+    ctx.roundRect(x,y,30,90,4)
+    ctx.fill()
+}
+const smallTriangleShapes =(x,y)=>{
+    ctx.beginPath();
+    let gradient = ctx.createLinearGradient(x,y,x+22.5,y-15  )
+    gradient.addColorStop(0.3,'yellow')
+    gradient.addColorStop(0.6,'#e461b4ff')
+    gradient.addColorStop(0.9,'green')
+    gradient.addColorStop(1,'darkgreen')
+    ctx.fillStyle = gradient;
+    ctx.moveTo(x,y)
+    ctx.lineTo(x+15,y-30)
+    ctx.lineTo(x+30,y)
+    ctx.closePath()
+    ctx.fill()
+}
+function group2(){
+    const group2Completed = largeStarShapesSteps>canvasHeight && smallRoundRectsSteps>canvasHeight && traingleshapeSteps>canvasHeight &&
+    circleShapeSteps>canvasHeight;
+    ctx.clearRect(0,0,canvasWidth,canvasHeight)
+    largeStarShapesSteps+=14;
+    smallRoundRectsSteps+=10;
+    traingleshapeSteps+=20;
+    circleShapeSteps+=12;
+    if(group2Completed){
+        largeStarShapesSteps=-60;
+        smallRoundRectsSteps=-90
+        traingleshapeSteps=-30;
+        circleShapeSteps= -40;
+        smallRoundRectsX = Math.floor(Math.random()*(cw-0+1)+0);
+        largeStarShapesX = Math.floor(Math.random()*(cw-0+1)+0);
+        traingleShapeX = Math.floor(Math.random()*(cw-0+1)+0);
+        circleShapeX = Math.floor(Math.random()*(cw-0+1)+0);
+        whichGroup = 'group1';
+    }
+    drawLargeStarShapes(largeStarShapesX,largeStarShapesSteps)
+    smallRoundRects(smallRoundRectsX,smallRoundRectsSteps)
+    smallTriangleShapes(traingleShapeX,traingleshapeSteps)
+    circleShape(circleShapeX,circleShapeSteps)
+    drawPlayer()
+    
+}
+function mainGameLoop(){
+    if(whichGroup === "group1"){
+        group1();
+    }else if(whichGroup === "group2"){
+        group2();
+    }
+}
+const mainGameInterval = setInterval(mainGameLoop,mainGameLoopTiming)
 //for mobile devices
 leftBtn.addEventListener('touchstart',(ev)=>{
     ev.preventDefault();
@@ -316,4 +279,36 @@ rightBtn.addEventListener('touchcancel',(ev)=>{
     clearInterval(rightTimeInterval)
 })
 drawPlayer()
-/*create a condition where step + player width is check and apply moving speed stop where canvas width is min and max */
+/*create a condition where playerStep + player width is check and apply moving speed stop where canvas width is min and max */
+document.addEventListener('keydown',(ev)=>{
+        if(ev.code == 'ArrowLeft'|| ev.code == 'KeyA' || ev.code == 'Numpad4' ){
+            ev.preventDefault()
+            clearInterval(lefTimeInterval)
+            clearInterval(rightTimeInterval)
+            lefTimeInterval = setInterval(()=>{
+                handleLongPress('left')
+            },15)
+        }else if(ev.code == 'ArrowRight' || ev.code == 'KeyD' || ev.code == 'Numpad6'){
+            ev.preventDefault()
+            clearInterval(rightTimeInterval)
+            clearInterval(lefTimeInterval)
+            rightTimeInterval = setInterval(()=>{
+                handleLongPress('right')
+            },15)
+        }
+        else(
+            console.log(ev.code)
+        )
+})
+document.addEventListener('keyup',(ev)=>{
+    if(ev.code == 'ArrowLeft'|| ev.code == 'KeyA' || ev.code == 'Numpad4' ){
+           ev.preventDefault()
+        clearInterval(lefTimeInterval)
+    }else if(ev.code == 'ArrowRight' || ev.code == 'KeyD' || ev.code == 'Numpad6'){
+        ev.preventDefault()
+        clearInterval(rightTimeInterval)
+        }
+    else(
+            console.log(ev.code)
+        )
+})
