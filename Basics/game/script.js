@@ -1,9 +1,14 @@
 function drawPlayer(){
+    player = new Path2D()
     ctx.beginPath()
-    ctx.roundRect(playerXintial+playerStep,playerYDefault,playerWidth,playerHeight,4)
+    player.roundRect(playerXintial+playerStep,playerYDefault,playerWidth,playerHeight,4)
     ctx.fillStyle = "rgba(230, 249, 249, 1) "
-    ctx.fill() 
-    // console.log(playerXintial+playerStep,playerYDefault)
+    ctx.fill(player) 
+    console.log(ctx.isPointInPath(player,playerXintial+playerStep+4,playerYDefault-4))
+    console.log(playerXintial+playerStep,playerYDefault)
+    console.log(playerXintial+playerStep+4,playerYDefault-4)
+    
+
     // console.log(ctx.isPointInPath(0,443.49,'nonzero'))
 }
 function redraw(){
