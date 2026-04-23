@@ -92,7 +92,7 @@ function isMethods(ctx){
         ctx.roundRect(10,10,120,120,12)
         ctx.fillStyle = gradient;
         ctx.fill()
-        console.log('Is points(35,89) are in between the path = ',ctx.isPointInPath(35,89))
+        console.log('Is points(35,89) are in between the path = ',ctx.isPointInPath(14,14,))
         console.log('Is points(141,89) are in between the path = ',ctx.isPointInPath(141,89))
         ctx.beginPath()
         ctx.strokeStyle = gradient;

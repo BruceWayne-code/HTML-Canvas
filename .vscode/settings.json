@@ -1,3 +1,8 @@
 {
+<<<<<<< HEAD
     "liveServer.settings.port": 5501
 }
+=======
+  "aiGitFlowAgent.commitMode": "commitAndPush"
+}
+>>>>>>> 33cb539078ccc5d59234bb0d316337566c0f1e23
