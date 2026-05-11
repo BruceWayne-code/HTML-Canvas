@@ -4,3 +4,7 @@ a =23;
 b = 12;
 # calculator
 print('a+b = ', a+b)
+function hello ():
+    print('Hello world')
+
+hello();
