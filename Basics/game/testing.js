@@ -3,7 +3,7 @@ try{
   let s = 'check ticket distrubting in jira'
   console.log('checking now = ',s)
   let anotherTestPhase = 2323;
-  console.log('Extension numbering testing = ')
+  console.log('Extension numbering testing = ',anotherTestPhase)
 }catch(error){
   console.error('Error occur during checking ticket in jira')
 }
