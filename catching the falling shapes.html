@@ -73,7 +73,35 @@
             </div>
         </div>
     </div>
-   
+   <h2>Get Device & Browser Details</h2>
+    <button onclick="printDetails()">Show Details</button>
+
+    <div id="output" style="display: none;"></div>
+
+    <script>
+        function printDetails() {
+            // Gathering Browser and Window details
+            const details = `
+                <strong>--- Window Details ---</strong>
+                Total Window Width: ${window.innerWidth}px
+                Total Window Height: ${window.innerHeight}px
+                Screen Resolution: ${window.screen.width}x${window.screen.height}
+                
+                <strong>--- Browser Details ---</strong>
+                Browser App Name: ${navigator.appName}
+                Browser Code Name: ${navigator.appCodeName}
+                User Agent: ${navigator.userAgent}
+                Platform: ${navigator.platform}
+                Language: ${navigator.language}
+                Cookies Enabled: ${navigator.cookieEnabled}
+            `;
+
+            // Displaying the results
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = details;
+            outputDiv.style.display = 'inline-block';
+        }
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const canvas = document.getElementById('gameCanvas');
