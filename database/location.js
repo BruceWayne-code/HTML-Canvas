@@ -1,1 +1,1 @@
-const db = "your_api_key_here"
+const db = "mongodb+srv://admin:mySuperSecret123@cluster.mongodb.net"
