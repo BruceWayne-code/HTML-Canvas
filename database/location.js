@@ -1,1 +1,1 @@
-const db = "mongodb+srv://admin:mySuperSecret123@cluster.mongodb.net"
+const db = "mongodb+srv://admin:mySuperSecret123@cluster.mongodb.net/1234"
