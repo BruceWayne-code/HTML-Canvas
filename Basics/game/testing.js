@@ -5,6 +5,7 @@ try{
   let numberPhaseTesting = 2323;
   let rs = 232
   console.error('rs error = ',rs)
+  //test file
   console.log('check number phase testing = ',numberPhaseTesting)
 }catch(error){
   console.error('Error occur during checking ticket in jira')
