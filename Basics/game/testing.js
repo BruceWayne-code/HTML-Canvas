@@ -4,7 +4,7 @@ try{
   console.log('checking now = ',s)
   let numberPhaseTesting = 2323;
   let rs = 232
-  let yoki = 'i am so test'
+  let yoki = 'again same test  with debugging information'
   console.error('rs error = ',rs)
   //test file
   let test = 'getting the changes'
