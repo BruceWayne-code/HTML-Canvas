@@ -4,7 +4,7 @@ try{
   console.log('checking now = ',s)
   let numberPhaseTesting = 2323;
   let rs = 232
-  let yoki = 'again same test  with debugging information'
+  let yoki = 'again same test  with debugging information to get the info of workflow'
   console.error('rs error = ',rs)
   //test file
   let test = 'getting the changes'
