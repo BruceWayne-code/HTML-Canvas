@@ -8,6 +8,7 @@ try{
   console.error('rs error = ',rs)
   //test file
   let test = 'getting the changes'
+  let checkaagain= []
   console.log('check number phase testing = ',numberPhaseTesting)
 }catch(error){
   console.error('Error occur during checking ticket in jira')
