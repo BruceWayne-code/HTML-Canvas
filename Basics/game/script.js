@@ -28,6 +28,7 @@ function drawPlayer() {
   console.log(ctx.isPointInPath(player, transformedCheckX, transformedCheckY));
 }
 function redraw() {
+  //djsjdd
   drawPlayer();
 }
 function resizeCanvas() {
