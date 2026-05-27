@@ -17,7 +17,7 @@ function drawPlayer() {
   let x = 12; 
   let y = 'w';
   let c ='eriop'
-  let tests = 'successfully done and again '
+  let tests = 'successfully done and again and try again to fetch doo '
   let checkAI= 'error checking again'
   // 2. Apply the DPR scale and round for sub-pixel accuracy
   //    The point must be checked in the scaled coordinate space.
