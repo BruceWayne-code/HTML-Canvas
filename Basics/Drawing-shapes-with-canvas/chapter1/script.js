@@ -3,11 +3,10 @@ function drawRect(ctx){
         ctx.strokeRect(120,10,100,100)
         ctx.clearRect(240,10,100,100) //clearRect means fully transparented with no outline , so it initialy not visible.
 }
-import getIgnorePatterns from '../../database/location'
+
 function drawWithPath(ctx){
-    let pattern = getIgnorePatterns();
-    console.log(pattern)
-    ctx.beginPath(pattern)
+    
+    ctx.beginPath()
     ctx.moveTo(30,50)
     ctx.lineTo(130,50)
     ctx.lineTo(30,100)
