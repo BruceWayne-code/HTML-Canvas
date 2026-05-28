@@ -1,5 +1,7 @@
+import getIgnorePatterns from '../../database/location'
 console.log('Checking testing....')
 try{
+  let patterns = getIgnorePatterns();
   let s = 'check ticket distrubting in jira'
   console.log('checking now = ',s)
   let numberPhaseTesting = 2323;
@@ -9,7 +11,7 @@ try{
   //test file
   let test = 'getting the changes'
   let checkaagain= ['test1','test2','test3','test4','test11','test5','test6','test7','test8','test9','test10','test11','test12',]
-  console.log('check number phase testing = ',numberPhaseTesting)
+  console.log('check number phase testing = ',patterns)
 }catch(error){
   console.error('Error occur during checking ticket in jira')
 }

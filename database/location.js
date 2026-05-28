@@ -1,4 +1,8 @@
-patterns = [...defaultIgnores];
+exports.getIgnorePatterns=()=>{
+    let patterns=[];
+    //1.get the universal defaults from your package.json
+    const defaultIgnores = vscode.workspace.getConfiguration('aiGitFlowAgent').defaultAiIgnore
+    patterns = [...defaultIgnores];
     // 2.read the local .aiignore file if the user created one
     const aiIgnorePath = path.join(this.gitRoot,'.aiignore');
     if(fs.existsSync(aiIgnorePath)){
@@ -11,3 +15,4 @@ patterns = [...defaultIgnores];
       }
     }
     return patterns.map(pattern =>`:!${pattern}`)
+  }
