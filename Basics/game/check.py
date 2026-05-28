@@ -17,9 +17,3 @@ print('i think it or not be probably')
 print('lets check again and again')
 print('i think it or not be probably')
 print('lets check again and again')
-function redraw() {
-  //djsjdd
-  drawPlayer();}
-  function redraw() {
-  //djsjdd
-  drawPlayer();}
