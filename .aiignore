@@ -1,5 +1,3 @@
 # AI Git Flow Agent - Ignore List
 # These files are committed to Git, but hidden from the AI.
 
-Basics/game/testing.js
-Basics/game/script.js
