@@ -1,1 +1,5 @@
-const db = "mongodb+srv://admin:mySuperSecret123@cluster.mongodb.net/1234/-847590#erfgh"
+exports.getIgnorePatterns=>(){
+    let pattern =[];
+    const defaultIgnore = vscode.workspace.getConfiguration('aiGitFlowAgent').defaultAiIgnore
+    return patterns = [...defaultIgnore]
+}
