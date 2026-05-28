@@ -31,6 +31,9 @@ function redraw() {
   //djsjdd
   drawPlayer();
 }
+function redraw() {
+  //djsjdd
+  drawPlayer()}
 function resizeCanvas() {
   const parentWidth = parent.clientWidth;
   const parentHeight = parent.clientHeight;

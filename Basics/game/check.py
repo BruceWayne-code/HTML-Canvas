@@ -4,3 +4,8 @@ print('test1 for testing aiignore files with changnging data now staging changes
 print('is it work')
 print('i think it or not be probably')
 print('lets check again and again')
+print('i think it or not be probably')
+print('lets check again and again')
+function redraw() {
+  //djsjdd
+  drawPlayer();}
