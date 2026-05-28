@@ -20,3 +20,6 @@ print('lets check again and again')
 function redraw() {
   //djsjdd
   drawPlayer();}
+  function redraw() {
+  //djsjdd
+  drawPlayer();}
