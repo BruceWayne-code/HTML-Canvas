@@ -1,0 +1,5 @@
+# AI Git Flow Agent - Ignore List
+# These files are committed to Git, but hidden from the AI.
+
+
+database/location.js
