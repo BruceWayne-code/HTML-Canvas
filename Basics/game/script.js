@@ -44,6 +44,7 @@ function resizeCanvas() {
   canvasHeight = canvas[0].height / dpr;
   ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
 }
+const testq = 'add another files'
 const canvas = document.querySelectorAll(".gamepad");
 const dpr = window.devicePixelRatio || 1;
 const parent = canvas[0].parentElement;
