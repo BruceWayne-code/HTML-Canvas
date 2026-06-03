@@ -1,1 +1,1 @@
-let apiKey = 'check again and now login is write to fetch the error vscode.window.showErrorMessage(`${error.message || error}'+"await updateSTatusBarText('Error', '$(error)')"
+let apiKey = 'check again and now login is write to fetch the error try again vscode.window.showErrorMessage(`${error.message || error}'+"await updateSTatusBarText('Error', '$(error)')"
