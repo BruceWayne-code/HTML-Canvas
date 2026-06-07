@@ -15,3 +15,8 @@ try{
 }catch(error){
   console.error('Error occur during checking ticket in jira')
 }
+export class printPlayer{
+  constructor(){
+    console.log('Player')
+  }
+}

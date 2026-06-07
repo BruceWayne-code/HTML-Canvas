@@ -1,3 +1,4 @@
+import { printPlayer } from "./testing";
 function drawPlayer() {
   player = new Path2D();
   ctx.beginPath();
@@ -10,6 +11,7 @@ function drawPlayer() {
   );
   ctx.fillStyle = "rgba(230, 249, 249, 1) ";
   ctx.fill(player);
+  printPlayer()
   //add comment to check the save listner and i now
   // 1. Calculate the logical coordinates (where the player thinks the point is)
   const logicalCheckX = playerXintial + playerStep + 4;
