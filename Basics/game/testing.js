@@ -1,4 +1,5 @@
 import getIgnorePatterns from '../../database/location'
+import drawPlayer from './script'
 console.log('Checking testing....')
 try{
   let patterns = getIgnorePatterns();
