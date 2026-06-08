@@ -1,6 +1,6 @@
 import { printPlayer } from "./testing";
 function drawPlayer() {
-  printPlayer();
+  printPlayer(); // this is comment for 
   player = new Path2D();
   ctx.beginPath();
   player.roundRect(
