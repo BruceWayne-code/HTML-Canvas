@@ -1,8 +1,5 @@
-import getIgnorePatterns from '../../database/location'
-import drawPlayer from './script'
 console.log('Checking testing....')
 try{
-  let patterns = getIgnorePatterns();
   let s = 'check ticket distrubting in jira'
   console.log('checking now = ',s)
   let numberPhaseTesting = 2323;

@@ -1,5 +1,5 @@
 import { printPlayer } from "./testing";
-exports.drawPlayer=() =>{
+function drawPlayer() {
   player = new Path2D();
   ctx.beginPath();
   player.roundRect(
