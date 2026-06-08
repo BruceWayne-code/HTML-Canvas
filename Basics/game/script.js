@@ -12,7 +12,12 @@ function drawPlayer() {
   ctx.fillStyle = "rgba(230, 249, 249, 1) ";
   ctx.fill(player);
   printPlayer()
-  //add comment to check the save listner and i now
+  let state = ''
+  document.addEventListener('onload',()=>{
+    state = 'catching the shapes'
+  })
+  //add comment;
+  //  to check the save listner and i now
   // 1. Calculate the logical coordinates (where the player thinks the point is)
   const logicalCheckX = playerXintial + playerStep + 4;
   const logicalCheckY = playerYDefault + playerHeight - 4;
