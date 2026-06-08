@@ -33,6 +33,7 @@ function drawPlayer() {
                 state = 'initializtion'
                 setTimeout(()=>{
                   state = 'pending catching'
+                  printPlayer();
                 },3000)
               },3000)
             },3000)
