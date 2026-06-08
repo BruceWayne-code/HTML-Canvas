@@ -31,6 +31,7 @@ function drawPlayer() {
               state ='shape is caught'
               setTimeout(()=>{
                 state = 'initializtion'
+                printPlayer();
                 setTimeout(()=>{
                   state = 'pending catching'
                   printPlayer();
