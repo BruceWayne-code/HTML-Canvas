@@ -13,7 +13,6 @@ function drawPlayer() {
   ctx.fillStyle = "rgba(230, 249, 249, 1) ";
   ctx.fill(player);
   printPlayer()
-  let state = ''
   document.addEventListener('onload',()=>{
     state = 'catching the shapes'
     
