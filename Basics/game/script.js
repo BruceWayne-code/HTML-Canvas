@@ -23,10 +23,7 @@ function drawPlayer() {
         setTimeout(()=>{
           state = 'Accessing....'
         },3000),
-        setTimeout(()=>{
-          state = 'changing'
-          
-        },3000)
+        
       },3000)
     },3000)
   })
