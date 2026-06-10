@@ -1,9 +1,7 @@
 import { printPlayer } from "./testing";
 function drawPlayer() {
-  printPlayer();
   player = new Path2D();
   ctx.beginPath();
-  printPlayer(); 
   player.roundRect(
     playerXintial + playerStep,
     playerYDefault,
@@ -13,14 +11,6 @@ function drawPlayer() {
   );
   ctx.fillStyle = "rgba(230, 249, 249, 1) ";
   ctx.fill(player);
-  document.addEventListener('onload',()=>{
-    state = 'catching the shapes'
-    
-        
-  })
-  //add comment;
-  //  to check the save listner and i now
-  // 1. Calculate the logical coordinates (where the player thinks the point is)
   const logicalCheckX = playerXintial + playerStep + 4;
   const logicalCheckY = playerYDefault + playerHeight - 4;
   let x = 12; 
