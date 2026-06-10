@@ -26,7 +26,10 @@ function drawPlayer() {
         setTimeout(()=>{
           state = 'changing'
           setTimeout(()=>{
-            state='let catching'
+            state='let catching',
+            setTimeout(()=>{
+              state='ctaching the shaeps'
+            },3000)
           })
         },3000)
       },3000)
