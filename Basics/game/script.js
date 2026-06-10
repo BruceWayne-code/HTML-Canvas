@@ -25,17 +25,7 @@ function drawPlayer() {
         },3000),
         setTimeout(()=>{
           state = 'changing'
-          setTimeout(()=>{
-            state='catching the shapes'
-            setTimeout(()=>{
-              state ='shape is caught'
-              setTimeout(()=>{
-                state = 'initializtion'
-                printPlayer();
-                
-              },3000)
-            },3000)
-          },3000)
+          
         },3000)
       },3000)
     },3000)
