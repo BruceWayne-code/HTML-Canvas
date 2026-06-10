@@ -16,16 +16,8 @@ function drawPlayer() {
   let state = ''
   document.addEventListener('onload',()=>{
     state = 'catching the shapes'
-    setTimeout(()=>{
-      state = 'not catching the shapes'
-      setTimeout(()=>{
-        state ='pending catching'
-        setTimeout(()=>{
-          state = 'Accessing....'
-        },3000),
+    
         
-      },3000)
-    },3000)
   })
   //add comment;
   //  to check the save listner and i now
