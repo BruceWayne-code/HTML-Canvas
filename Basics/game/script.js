@@ -1,4 +1,3 @@
-import { printPlayer } from "./testing";
 function drawPlayer() {
   printPlayer(); // this is comment for 
   player = new Path2D();
@@ -12,7 +11,6 @@ function drawPlayer() {
   );
   ctx.fillStyle = "rgba(230, 249, 249, 1) ";
   ctx.fill(player);
-  printPlayer()
   document.addEventListener('onload',()=>{
     state = 'catching the shapes'
     
