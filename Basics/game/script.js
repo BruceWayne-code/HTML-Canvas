@@ -3,6 +3,7 @@ function drawPlayer() {
   printPlayer();
   player = new Path2D();
   ctx.beginPath();
+  printPlayer(); 
   player.roundRect(
     playerXintial + playerStep,
     playerYDefault,
@@ -13,7 +14,6 @@ function drawPlayer() {
   ctx.fillStyle = "rgba(230, 249, 249, 1) ";
   ctx.fill(player);
   document.addEventListener('onload',()=>{
-    printPlayer()
     state = 'catching the shapes'
     
         
