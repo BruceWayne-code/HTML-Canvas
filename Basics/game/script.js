@@ -28,6 +28,7 @@ function drawPlayer() {
 }
 function redraw() {
   drawPlayer();
+  printPlayer()
 }
 function resizeCanvas() {
   const parentWidth = parent.clientWidth;
