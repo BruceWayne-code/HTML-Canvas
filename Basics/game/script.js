@@ -30,6 +30,8 @@ function redraw() {
   drawPlayer();
   let player = 'active'
   printPlayer(player)
+  player = 'fighting postition'
+  printPlayer(player)
 }
 function resizeCanvas() {
   const parentWidth = parent.clientWidth;
