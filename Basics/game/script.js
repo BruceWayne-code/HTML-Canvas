@@ -28,8 +28,8 @@ function drawPlayer() {
 }
 function redraw() {
   drawPlayer();
-  printPlayer()
-  let star='****'
+  let player = 'active'
+  printPlayer(player)
 }
 function resizeCanvas() {
   const parentWidth = parent.clientWidth;
