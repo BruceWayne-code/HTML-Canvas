@@ -18,3 +18,6 @@ export class printPlayer{
     console.log('Player')
   }
 }
+export function PrintApi(api){
+  console.log(api)
+}
