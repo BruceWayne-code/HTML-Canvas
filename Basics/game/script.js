@@ -29,7 +29,7 @@ function drawPlayer() {
 function redraw() {
   drawPlayer();
   printPlayer()
-  let star='*'
+  let star='****'
 }
 function resizeCanvas() {
   const parentWidth = parent.clientWidth;
