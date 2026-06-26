@@ -9,6 +9,7 @@ print('lets check again and again')
 function redraw() {
   //djsjdd
   drawPlayer();}
+  drawPlayer();
   print('python successfully installed')
 print('test1 for testing aiignore files with changnging data now staging changes and getting chore automated changes')
 # hnpew
