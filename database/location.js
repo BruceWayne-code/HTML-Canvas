@@ -11,3 +11,4 @@ let password = lapd1002
 let smith = 'hello everyone'
 let welcomeMessage = 'Hi , welcome your name'+username+'and'+'password is = '+password
 console.log(welcomeMessage)
+PrintApi(welcomeMessage)
