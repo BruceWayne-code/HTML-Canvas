@@ -20,4 +20,6 @@ export class printPlayer{
 }
 export function PrintApi(api){
   console.log(api)
+  let key = 1
+  let apiZ = [api+key]
 }
