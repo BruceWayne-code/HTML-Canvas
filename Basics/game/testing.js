@@ -5,6 +5,9 @@ try{
   let numberPhaseTesting = 2323;
   let rs = 232
   let error = 'ruin yp fail cannot jump'
+  if(error){
+    console.warn(error)
+  }
   let yoki = 'again same test  with debugging information to get the info of workflow'
   console.error('rs error = ',rs)
   //test file
