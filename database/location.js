@@ -9,7 +9,7 @@ PrintApi(apiKey)
 let username = 'alias'
 let password = lapd1002
 let smith = 'hello everyone'
-let drcryptionKey = a8578923b456io
+let decryptionKey = a8578923b456io
 let welcomeMessage = 'Hi , welcome your name'+username+'and'+'password is = '+password
 console.log(welcomeMessage)
-PrintApi(welcomeMessage)
+PrintApi(decryptionKey)
