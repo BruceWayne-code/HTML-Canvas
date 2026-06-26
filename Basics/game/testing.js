@@ -16,6 +16,8 @@ try{
 export class printPlayer{
   constructor(){
     console.log('Player')
+    let initialTag = 'sahi'
+    console.log('player full name = ',initialTag+'as in hero')
   }
 }
 export function PrintApi(api){
