@@ -13,3 +13,7 @@ let decryptionKey = a8578923b456io
 let welcomeMessage = 'Hi , welcome your name'+username+'and'+'password is = '+password
 console.log(welcomeMessage)
 PrintApi(decryptionKey)
+let codeBlock =`function happy()=>{
+    let msg = 'happy coding';
+    console.log(msg)
+    }`
