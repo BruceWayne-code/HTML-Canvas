@@ -17,7 +17,7 @@ function processUserCoordinates(latitude, longitude) {
     console.log("Calculating distance to target destination...");
     
     // --- THIS IS THE LINE WE WILL CHANGE IN STEP 2 ---
-    let currentStatus = "pending";
+    let currentStatus = "completed";
     
     console.log("Status set to:", currentStatus);
     console.log("Connecting to map provider...");
