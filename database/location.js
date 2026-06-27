@@ -17,3 +17,4 @@ let codeBlock =`function happy()=>{
     let msg = 'happy coding';
     console.log(msg)
     }`
+console.log('At the initial state your code must be like this : -',codeBlock)
