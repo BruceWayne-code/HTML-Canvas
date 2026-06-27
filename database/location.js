@@ -20,3 +20,7 @@ let codeBlock =`function happy()=>{
 console.log('At the initial state your code must be like this : -',codeBlock)
 const key = a343490jsk;
 console.log('Your key for opening api key codeblocks is = ',key)
+let state = true;
+if(apiKey){
+    state = false
+}
